@@ -10,6 +10,15 @@ it uses `fzf`, `jq` & `aws-cli` under the hood to make ssh-ing into aws instance
 2. `aws configure` should've been run & authenticated prior to using aws-ssh
 
 ## Installation
+1. Clone the repository into a convenient location
+```bash
+git clone https://github.com/sreedevk/aws-ssh ~/.local/
+```
+
+2. Add The `aws-ssh` executable to `$PATH` in your `.zshrc` or `.bashrc`
+```bash
+export PATH="$PATH:/.local/aws-ssh/"
+```
 There is not formal installation process as of yet, You can clone this repo locally & make sure that the
 `aws-ssh` executable is in `$PATH`.
 
