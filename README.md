@@ -5,6 +5,7 @@ it uses `fzf`, `jq` & `aws-cli` under the hood to make ssh-ing into aws instance
 
 ## Pre-Requisites
 1. Make sure that you have [fzf](https://github.com/junegunn/fzf), [jq](https://stedolan.github.io/jq/) & [aws-cli](https://aws.amazon.com/cli/) installed & configured
+2. `aws configure` should've been run & authenticated prior to using aws-ssh
 
 ## Installation
 There is not formal installation process as of yet, You can clone this repo locally & make sure that the
