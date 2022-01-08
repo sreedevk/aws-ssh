@@ -1,0 +1,24 @@
+#!/usr/bin/env zsh
+
+load-config() {
+  [ -f "$HOME/.aws-ssh-config" ] && source "$HOME/.aws-ssh-config"
+}
+
+aws-instances() {
+  AWS_FILTER="*"
+  OUTPUT_TYPE="table"
+  [ ! -z "$1" ] && AWS_FILTER="*$1*"
+  [ ! -z "$2" ] && OUTPUT_TYPE="$2"
+  aws ec2 describe-instances\
+    --query "Reservations[*].Instances[*].{InstanceID:InstanceId,PrivateIP:PrivateIpAddress,PublicIPAddr:PublicIp,Instance:Tags[?Key=='Name']|[0].Value}"\
+    --filter "Name=tag:Name,Values=$AWS_FILTER"\
+    --output "$OUTPUT_TYPE" 
+}
+
+aws-connect(){
+  [ -z "$1" ] && echo "TC-CONNECT\nusage: tc-connect <instance-query> <username>" && return
+  CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | .[] | "\(.PrivateIP)\t\(.Instance)\t\(.InstanceID)\t\(.PublicIPAddr)"')" | fzf | awk '{print $1}')"
+  ssh "$2@$CONN_IP_ADDR"
+}
+
+load-config
