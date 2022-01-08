@@ -1,4 +1,4 @@
-# AWS-SSH - Dynamically SSH Into AWS EC2 Instances 
+# AWS-SSH - Dynamically SSH Into AWS EC2 Instances at Lightning Speed
 
 `aws-ssh` is a configurable shell helper that's written purely in bash (compatible with zsh).
 it uses `fzf`, `jq` & `aws-cli` under the hood to make ssh-ing into aws instances easy.
@@ -36,7 +36,7 @@ DEFAULT_USER=ec2-user
 ## Usage
 ```
 =======================================================================
-AWS-SSH: Connect to AWS EC2 Instances at Lightning Speeds
+AWS-SSH: Connect to AWS EC2 Instances at Lightning Speed
 =======================================================================
 
 Usage:

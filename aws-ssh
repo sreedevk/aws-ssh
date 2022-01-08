@@ -2,7 +2,7 @@
 
 help() {
   echo "======================================================================="
-  echo "\033[0;32mAWS-SSH: Connect to AWS EC2 Instances at Lightning Speeds\033[0m"
+  echo "\033[0;32mAWS-SSH: Connect to AWS EC2 Instances at Lightning Speed\033[0m"
   echo "=======================================================================\n"
   echo "Usage: "
   echo -e "\033[0;31mList Instances\033[0m:\taws-ssh list \033[0;36m<partial-search-term>\033[0m"
