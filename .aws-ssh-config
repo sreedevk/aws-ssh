@@ -1,3 +1,0 @@
-PRIVATE_KEY=~/.ssh/somekey.pem
-BASTION=username@192.168.50.100
-DEFAULT_USER=ec2-user
