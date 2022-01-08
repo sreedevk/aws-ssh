@@ -1,7 +1,29 @@
 #!/usr/bin/env zsh
 
+help() {
+  echo "======================================================================="
+  echo "\033[0;32mAWS-SSH: Connect to AWS EC2 Instances at Lightning Speeds\033[0m"
+  echo "=======================================================================\n"
+  echo "Usage: "
+  echo -e "\033[0;31mList Instances\033[0m:\taws-ssh list"
+  echo -e "\033[0;31mConnect\033[0m:\taws-ssh connect \033[0;36m<instance-name-search-term> <username>\033[0m"
+  echo "\nNotes: "
+  echo -e "\033[0;36m<username>\033[0m will be taken from \033[0;36m~/.aws-ssh-config\033[0m if not provided"
+  echo -e "\033[0;36mBastion Servers\033[0m can be configured in \033[0;36m~/.aws-ssh-config\033[0m"
+  echo -e "\033[0;36mPrivate Keys (*.pem)\033[0m can be configured in \033[0;36m~/.aws-ssh-config\033[0m"
+  echo "\nExample \033[0;36m~/.aws-ssh-config\033[0m:\n"
+  echo "\e[3mPRIVATE_KEY=~/.ssh/somekey.pem\e[0m"
+  echo "\e[3mBASTION=username@192.168.50.100\e[0m"
+  echo "\e[3mDEFAULT_USER=ec2-user\e[0m"
+  echo "\n"
+}
+
 load-config() {
   [ -f "$HOME/.aws-ssh-config" ] && source "$HOME/.aws-ssh-config"
+}
+
+bastion() {
+  [ ! -z $BASTION ] && "-i $BASTION"
 }
 
 aws-instances() {
@@ -18,7 +40,7 @@ aws-instances() {
 aws-connect(){
   [ -z "$1" ] && echo "TC-CONNECT\nusage: tc-connect <instance-query> <username>" && return
   CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | .[] | "\(.PrivateIP)\t\(.Instance)\t\(.InstanceID)\t\(.PublicIPAddr)"')" | fzf | awk '{print $1}')"
-  ssh "$2@$CONN_IP_ADDR"
+  ssh $(bastion) "$2@$CONN_IP_ADDR"
 }
 
-load-config
+help
