@@ -23,10 +23,16 @@ load-config() {
 }
 
 bastion() {
-  [ ! -z $BASTION ] && "-i $BASTION"
+  ([ ! -z $BASTION ] && echo "-J $BASTION") || echo ""
 }
 
+private-key-specifier() {
+  ([ ! -z $PRIVATE_KEY ] && echo "-i $PRIVATE_KEY") || echo ""
+}
 
+default-user() {
+  ([ ! -z $DEFAULT_USER ] && echo "$DEFAULT_USER") || echo "$1"
+}
 
 aws-instances() {
   AWS_FILTER="*"
@@ -42,10 +48,11 @@ aws-instances() {
 aws-connect(){
   [ -z "$1" ] && help && return
   CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | .[] | "\(.PrivateIP)\t\(.Instance)\t\(.InstanceID)\t\(.PublicIPAddr)"')" | fzf | awk '{print $1}')"
-  ssh $(bastion) "$2@$CONN_IP_ADDR"
+  ssh $(bastion) $(private-key-specifier) "$(default-user $2)@$CONN_IP_ADDR"
 }
 
 initialize() {
+  load-config
   case "$1" in
     list)
       aws-instances $2
