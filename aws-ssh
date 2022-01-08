@@ -5,7 +5,7 @@ help() {
   echo "\033[0;32mAWS-SSH: Connect to AWS EC2 Instances at Lightning Speeds\033[0m"
   echo "=======================================================================\n"
   echo "Usage: "
-  echo -e "\033[0;31mList Instances\033[0m:\taws-ssh list"
+  echo -e "\033[0;31mList Instances\033[0m:\taws-ssh list \033[0;36m<partial-search-term>\033[0m"
   echo -e "\033[0;31mConnect\033[0m:\taws-ssh connect \033[0;36m<instance-name-search-term> <username>\033[0m"
   echo "\nNotes: "
   echo -e "\033[0;36m<username>\033[0m will be taken from \033[0;36m~/.aws-ssh-config\033[0m if not provided"
@@ -26,6 +26,8 @@ bastion() {
   [ ! -z $BASTION ] && "-i $BASTION"
 }
 
+
+
 aws-instances() {
   AWS_FILTER="*"
   OUTPUT_TYPE="table"
@@ -38,9 +40,23 @@ aws-instances() {
 }
 
 aws-connect(){
-  [ -z "$1" ] && echo "TC-CONNECT\nusage: tc-connect <instance-query> <username>" && return
+  [ -z "$1" ] && help && return
   CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | .[] | "\(.PrivateIP)\t\(.Instance)\t\(.InstanceID)\t\(.PublicIPAddr)"')" | fzf | awk '{print $1}')"
   ssh $(bastion) "$2@$CONN_IP_ADDR"
 }
 
-help
+initialize() {
+  case "$1" in
+    list)
+      aws-instances $2
+      ;;
+    connect)
+      aws-connect ${@:2}
+      ;;
+    *)
+      help
+      ;;
+  esac
+}
+
+initialize $@
