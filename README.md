@@ -14,7 +14,7 @@ it uses `fzf`, `jq` & `aws-cli` under the hood to make ssh-ing into aws instance
 ## Installation
 1. Clone the repository into a convenient location
 ```bash
-git clone https://github.com/sreedevk/aws-ssh ~/.local/
+git clone https://github.com/sreedevk/aws-ssh ~/.local/aws-ssh/
 ```
 
 2. Add The `aws-ssh` executable to `$PATH` in your `.zshrc` or `.bashrc`
