@@ -19,7 +19,7 @@ git clone https://github.com/sreedevk/aws-ssh ~/.local/aws-ssh/
 
 2. Add The `aws-ssh` executable to `$PATH` in your `.zshrc` or `.bashrc`
 ```bash
-export PATH="$PATH:/.local/aws-ssh/"
+export PATH="$PATH:$HOME/.local/aws-ssh/"
 ```
 There is not formal installation process as of yet, You can clone this repo locally & make sure that the
 `aws-ssh` executable is in `$PATH`.
