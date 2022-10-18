@@ -8,8 +8,9 @@ it uses `fzf`, `jq` & `aws-cli` under the hood to make ssh-ing into aws instance
 ![2022-01-08-142840_2066x1158_scrot](https://user-images.githubusercontent.com/36154121/148638437-d42d8d8f-6b00-4b7b-a008-fd3b24798ef4.png)
 
 ## Pre-Requisites
-1. Make sure that you have [fzf](https://github.com/junegunn/fzf), [jq](https://stedolan.github.io/jq/) & [aws-cli](https://aws.amazon.com/cli/) installed & configured
-2. `aws configure` should've been run & authenticated prior to using aws-ssh
+1. aws-ssh current only works with zsh. Please make sure that $SHELL is zsh before you install.
+2. Make sure that you have [fzf](https://github.com/junegunn/fzf), [jq](https://stedolan.github.io/jq/) & [aws-cli](https://aws.amazon.com/cli/) installed & configured
+3. `aws configure` should've been run & authenticated prior to using aws-ssh
 
 ## Installation (Script)
 1. Run the Installation Script
