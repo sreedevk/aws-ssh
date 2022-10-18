@@ -1,7 +1,7 @@
 #!/usr/bin/bash
 
 mkdir -p ~/.local/bin/
-wget https://github.com/sreedevk/aws-ssh/blob/main/aws-ssh -P ~/.local/bin
+wget https://raw.githubusercontent.com/sreedevk/aws-ssh/main/aws-ssh -P ~/.local/bin
 cat > ~/.aws-ssh-config <<-EOF
 # PRIVATE_KEY=~/.ssh/somekey.pem
 # BASTION=username@192.168.50.100
