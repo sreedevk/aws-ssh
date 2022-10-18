@@ -20,6 +20,7 @@ it uses `fzf`, `jq` & `aws-cli` under the hood to make ssh-ing into aws instance
 * Don't forget to inspect random scripts you find on the internet before you pipe it into bash.
 
 2. check and fix configuration @ ~/.aws-ssh-config
+3. Restart your shell session
 
 ## Installation (Manual)
 1. Clone the repository into a convenient location
