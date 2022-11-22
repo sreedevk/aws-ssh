@@ -1,8 +1,10 @@
 #!/usr/bin/bash
 
 mkdir -p ~/.local/bin/
+echo "PATH=$PATH:$HOME/.local/bin" >> $HOME/.zshrc
 wget https://raw.githubusercontent.com/sreedevk/aws-ssh/main/aws-ssh -P ~/.local/bin
 chmod +x ~/.local/bin/aws-ssh
+
 cat > ~/.aws-ssh-config <<-EOF
 # PRIVATE_KEY=~/.ssh/somekey.pem
 # BASTION=username@192.168.50.100
