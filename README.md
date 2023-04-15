@@ -16,7 +16,8 @@ it uses `fzf`, `jq` & `aws-cli` under the hood.
 3. `aws configure` should've been run & authenticated prior to using aws-ssh  
 
 ## Installation
-1. Clone the repository into a convenient location
+1. fetch the `aws-ssh` script using `wget`  
+
 ```bash
   wget https://raw.githubusercontent.com/sreedevk/aws-ssh/main/aws-ssh -P ~/.local/bin
 ```
