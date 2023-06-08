@@ -38,9 +38,10 @@ AWS-SSH: Connect to AWS EC2 Instances at Lightning Speed
 
 Usage:
 List Instances:	aws-ssh list <partial-search-term>
-Connect:	aws-ssh connect <instance-name-search-term> <username>
+Connect:	aws-ssh connect <partial-search-term> <username>
 
 Notes:
+<partial-search-tearm> matchs "instance name" and "instance id"
 <username> will be taken from ~/.aws-ssh-config if not provided
 Bastion Servers can be configured in ~/.aws-ssh-config
 Private Keys (*.pem) can be configured in ~/.aws-ssh-config
@@ -74,6 +75,9 @@ The jump/bastion server to use while ssh-ing into ec2-instances.
 ```bash
 BASTION=username@192.168.50.100
 ```
+
+Note:
+When `BASTION` variable is not set, SSH will establish a connection using the public address
 
 3. DEFAULT_USER
 
