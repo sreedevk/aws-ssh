@@ -43,14 +43,14 @@ aws-instances() {
   [ ! -z "$1" ] && AWS_FILTER="*$1*"
   [ ! -z "$2" ] && OUTPUT_TYPE="$2"
   aws ec2 describe-instances\
-    --query "Reservations[*].Instances[*].{InstanceID:InstanceId,PrivateIP:PrivateIpAddress,PublicIPAddr:PublicIp,Instance:Tags[?Key=='Name']|[0].Value}"\
-    --filter "Name=tag:Name,Values=$AWS_FILTER"\
+      --query "Reservations[].Instances[?Tags[?contains(Value, '$1')] || contains(InstanceId, '$1')]|[?length(@) > \`0\`][].{InstanceID:InstanceId,PrivateIP:PrivateIpAddress,PublicIpAddress:PublicIpAddress,Instance:Tags[?Key=='Name']|[0].Value}"\
+    --filter "Name=instance-state-name,Values=running"\
     --output "$OUTPUT_TYPE" 
 }
 
 aws-connect(){
   [ -z "$1" ] && help && return
-  CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | .[] | "\(.PrivateIP)\t\(.Instance)\t\(.InstanceID)\t\(.PublicIPAddr)"')" | fzf | awk '{print $1}')"
+  CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | "\(.PrivateIP)\t\(.Instance)\t\(.InstanceID)\t\(.PublicIpAddress)"')" | fzf | awk "{print $( [ -z "$(bastion)" ] && echo '$4' || echo '$1' )}")"
   ssh $(bastion) $(private-key-specifier) "$(default-user $2)@$CONN_IP_ADDR"
 }
 
