@@ -43,7 +43,7 @@ aws-instances() {
   [ ! -z "$1" ] && AWS_FILTER="*$1*"
   [ ! -z "$2" ] && OUTPUT_TYPE="$2"
   aws ec2 describe-instances\
-      --query "Reservations[].Instances[?Tags[?contains(Value, '$1')] || contains(InstanceId, '$1')]|[?length(@) > \`0\`][].{InstanceID:InstanceId,PrivateIP:PrivateIpAddress,PublicIpAddress:PublicIpAddress,Instance:Tags[?Key=='Name']|[0].Value}"\
+    --query "Reservations[].Instances[?Tags[?contains(Value, '$1')] || contains(InstanceId, '$1')]|[?length(@) > \`0\`][].{InstanceID:InstanceId,PrivateIP:PrivateIpAddress,PublicIpAddress:PublicIpAddress,Instance:Tags[?Key=='Name']|[0].Value}"\
     --filter "Name=instance-state-name,Values=running"\
     --output "$OUTPUT_TYPE" 
 }
