@@ -51,7 +51,7 @@ aws-instances() {
 
 aws-connect(){
   [ -z "$1" ] && help && return
-  CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | "\(.PrivateIP)\t\(.Instance)\t\(.InstanceID)\t\(.PublicIpAddress)"')" | fzf | awk "{print $( [ -z "$(bastion)" ] && echo '$4' || echo '$1' )}")"
+  CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | "\(.Instance)\t\(.InstanceID)\t\(.PrivateIP)\t\(.PublicIpAddress)"')" | fzf | awk "{print $( [ -z "$(bastion)" ] && echo '$4' || echo '$3' )}")"
   ssh $(bastion) $(private-key-specifier) "$(default-user $2)@$CONN_IP_ADDR"
 }
 
