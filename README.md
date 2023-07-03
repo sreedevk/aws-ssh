@@ -37,8 +37,10 @@ AWS-SSH: Connect to AWS EC2 Instances at Lightning Speed
 =======================================================================
 
 Usage:
-List Instances:	aws-ssh list <partial-search-term>
-Connect:	aws-ssh connect <partial-search-term> <username>
+list instances:	    aws-ssh list <partial-search-term>
+connect:	        aws-ssh connect <partial-search-term> <username>
+private ip connect: aws-ssh priconn <partial-search-term> <username>
+public  ip connect: aws-ssh pubconn <partial-search-term> <username>
 
 Notes:
 <partial-search-tearm> matchs "instance name" and "instance id"

@@ -5,8 +5,10 @@ help() {
   printf "\033[0;32mAWS-SSH: Connect to AWS EC2 Instances at Lightning Speed\033[0m \n"
   printf "=======================================================================\n\n"
   printf "Usage: \n"
-  printf "\033[0;31mList Instances\033[0m:\taws-ssh list \033[0;36m<partial-search-term>\033[0m \n"
-  printf "\033[0;31mConnect\033[0m:\taws-ssh connect \033[0;36m<partial-search-term> <username>\033[0m \n\n"
+  printf "\033[0;31mList Instances\033[0m:\t\t\taws-ssh list \033[0;36m<partial-search-term>\033[0m \n"
+  printf "\033[0;31mConnect\033[0m:\t\t\taws-ssh connect \033[0;36m<partial-search-term> <username>\033[0m \n"
+  printf "\033[0;31mPrivate IP Connect\033[0m:\t\taws-ssh priconn \033[0;36m<partial-search-term> <username>\033[0m \n"
+  printf "\033[0;31mPublic  IP Connect\033[0m:\t\taws-ssh pubconn \033[0;36m<partial-search-term> <username>\033[0m \n\n"
   printf "Notes: \n"
   printf "\033[0;36m<partial-search-term>\033[0m matchs \"instance name\" and \"instance id\" \n"
   printf "\033[0;36m<username>\033[0m will be used from \033[0;36m~/.aws-ssh-config\033[0m if not provided \n"
@@ -49,6 +51,17 @@ aws-instances() {
     --output "$OUTPUT_TYPE" 
 }
 
+aws-private-connect() {
+  [ -z "$1" ] && help && return
+  CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | .[] | "\(.PrivateIP)\t\(.Instance)\t\(.InstanceID)\t\(.PublicIPAddr)"')" | fzf | awk '{print $1}')"
+  ssh $(bastion) $(private-key-specifier) "$(default-user $2)@$CONN_IP_ADDR"
+}
+
+aws-public-connect() {
+  [ -z "$1" ] && help && return
+  CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | "\(.Instance)\t\(.InstanceID)\t\(.PrivateIP)\t\(.PublicIpAddress)"')" | fzf | awk "{print $4}")"
+}
+
 aws-connect(){
   [ -z "$1" ] && help && return
   CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | "\(.Instance)\t\(.InstanceID)\t\(.PrivateIP)\t\(.PublicIpAddress)"')" | fzf | awk "{print $( [ -z "$(bastion)" ] && echo '$4' || echo '$3' )}")"
@@ -63,6 +76,12 @@ initialize() {
       ;;
     connect)
       aws-connect ${@:2}
+      ;;
+    priconn)
+      aws-private-connect ${@:2}
+      ;;
+    pubconn)
+      aws-public-connect ${@:2}
       ;;
     *)
       help
