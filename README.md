@@ -76,11 +76,7 @@ The jump/bastion server to use while ssh-ing into ec2-instances.
 BASTION=username@192.168.50.100
 ```
 
-Note:
-When `BASTION` variable is not set, SSH will establish a connection using the public address
-
 3. DEFAULT_USER
-
 if the username part is omitted while using `aws-ssh connect <instance-name> <username>`, the `DEFAULT_USER` will be used.
 This can be beneficial if you have the same username for most ec2-instances, as you won't have to type the username each time.
 

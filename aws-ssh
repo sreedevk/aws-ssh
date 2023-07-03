@@ -53,19 +53,25 @@ aws-instances() {
 
 aws-private-connect() {
   [ -z "$1" ] && help && return
-  CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | "\(.Instance)\t\(.InstanceID)\t\(.PrivateIP)\t\(.PublicIpAddress)"')" | fzf | awk '{print $3}')"
+  CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | "\(.Instance)\t\(.InstanceID)\t\(.PrivateIP)\t\(.PublicIpAddress)"')" | fzf | awk '{print $(NF-1)}')"
   ssh $(bastion) $(private-key-specifier) "$(default-user $2)@$CONN_IP_ADDR"
 }
 
 aws-public-connect() {
   [ -z "$1" ] && help && return
-  CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | "\(.Instance)\t\(.InstanceID)\t\(.PrivateIP)\t\(.PublicIpAddress)"')" | fzf | awk '{print $4}')"
+  CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | "\(.Instance)\t\(.InstanceID)\t\(.PrivateIP)\t\(.PublicIpAddress)"')" | fzf | awk '{print $NF}')"
   ssh $(bastion) $(private-key-specifier) "$(default-user $2)@$CONN_IP_ADDR"
 }
 
 aws-connect(){
   [ -z "$1" ] && help && return
-  CONN_IP_ADDR="$(echo "$(aws-instances $1 json | jq -r '.[] | "\(.Instance)\t\(.InstanceID)\t\(.PrivateIP)\t\(.PublicIpAddress)"')" | fzf | awk "{print $( [ -z "$(bastion)" ] && echo '$4' || echo '$3' )}")"
+  CONN_MACHINE="$(echo "$(aws-instances $1 json | jq -r '.[] | "\(.Instance)\t\(.InstanceID)\t\(.PrivateIP)\t\(.PublicIpAddress)"')" | fzf)"
+
+  PRIVATE_IP="$(echo $CONN_MACHINE | awk '{print $(NF-1)}')"
+  PUBLIC_IP="$(echo $CONN_MACHINE | awk '{print $NF}')"
+
+  CONN_IP_ADDR="$([ $PUBLIC_IP = "null" ] && echo $PRIVATE_IP || echo $PUBLIC_IP)"
+
   ssh $(bastion) $(private-key-specifier) "$(default-user $2)@$CONN_IP_ADDR"
 }
 
