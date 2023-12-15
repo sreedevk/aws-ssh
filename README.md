@@ -1,5 +1,10 @@
 # AWS-SSH
 
+## OBSOLETE - USE BLAZE-SSH INSTEAD
+Due to limitations in adding features & extending aws-ssh, I've created [blaze-ssh](https://github.com/sreedevk/blaze-ssh).
+It adds features like cached instance list & configurable address type (private/public).
+Please use [blaze-ssh](https://github.com/sreedevk/blaze-ssh) instead of aws-ssh.
+
 ### Dynamically SSH Into AWS EC2 Instances at Lightning Speed
 
 `aws-ssh` is a bash script for conveniently ssh-ing into AWS EC2 instances.
